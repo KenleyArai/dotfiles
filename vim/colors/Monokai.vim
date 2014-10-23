@@ -1,0 +1,1 @@
+/home/kenley/.vim/bundle/vim-colorschemes/colors/Monokai.vim
