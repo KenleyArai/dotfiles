@@ -48,14 +48,6 @@ nnoremap <S-H> <C-W><C-H>
 nmap <F8> :TagbarToggle<CR>
 autocmd FileType c,cpp nested :TagbarOpen
 
-"----Nerdtree
-autocmd VimEnter * NERDTree | wincmd p
-let g:nerdtree_tabs_open_on_console_startup=1
-"Movement between tabs
-map  <C-l> :tabn<CR>
-map  <C-h> :tabp<CR>
-map  <C-n> :tabnew<CR>
-
 "----Easymotion
 let g:EasyMotion_smartcase = 1
 
