@@ -11,10 +11,18 @@ colorscheme Tomorrow-Night
 "Setting line numbers
 set number
 
+"Adding newlines without entering insert mode
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
+
 "Setting indenting
 set expandtab
 set shiftwidth=4
 set softtabstop=4
+
+"Setting leader
+let mapleader=","
+set timeout timeoutlen=1500
 
 "Fixing backspace issues
 set backspace=indent,eol,start
@@ -157,3 +165,9 @@ function! s:align()
                 call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
         endif
 endfunction
+
+"----cpp-enchanced-highlight
+"let g:cpp_class_scope_highlight = 1
+
+"----Auto-Pairs
+let g:AutoPairsFlyMode = 1
