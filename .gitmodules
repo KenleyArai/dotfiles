@@ -37,3 +37,27 @@
 [submodule "vim/bundle/nerdcommenter"]
 	path = vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter
+[submodule "vim/bundle/vim-surround"]
+	path = vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "vim/bundle/vim-foldfocus"]
+	path = vim/bundle/vim-foldfocus
+	url = https://github.com/vasconcelloslf/vim-foldfocus
+[submodule "vim/bundle/vim-tmux-navigator"]
+	path = vim/bundle/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "vim/bundle/tmuxline.vim"]
+	path = vim/bundle/tmuxline.vim
+	url = https://github.com/edkolev/tmuxline.vim
+[submodule "vim/bundle/neocomplete.vim"]
+	path = vim/bundle/neocomplete.vim
+	url = https://github.com/Shougo/neocomplete.vim
+[submodule "vim/bundle/neocomplcache.vim"]
+	path = vim/bundle/neocomplcache.vim
+	url = https://github.com/Shougo/neocomplcache.vim
+[submodule "vim/bundle/badwolf"]
+	path = vim/bundle/badwolf
+	url = https://github.com/sjl/badwolf
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular

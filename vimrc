@@ -5,15 +5,33 @@ filetype plugin indent on
 "-------------Non-Plugin settings-----------
 
 syntax enable
-
-colorscheme Tomorrow-Night
+"set foldmethod=syntax
+colorscheme badwolf 
 
 "Setting line numbers
 set number
 
+"Changing movement to be like bash
+map <C-e> $
+map <C-a> 0^
+imap <C-e> <ESC>$a
+imap <C-a> <ESC>0^i
+
+"Yanking a single line
+map <C-y> 0v$y^
+imap <C-y> <ESC>0v$y^i
+
+"Moving down a single line even if wrapped
+nnoremap j gj
+nnoremap k gk
+"imap <Up> g<Up>
+"imap <Down> g<Down>
+
 "Adding newlines without entering insert mode
-nmap <S-Enter> O<Esc>
-nmap <CR> o<Esc>
+nmap O O<Esc>
+nmap o o<Esc>k
+imap <C-o> <Esc>oi
+imap <C-O> <Esc>Oi
 
 "Setting indenting
 set expandtab
@@ -70,19 +88,20 @@ map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 
 "----Indent guides
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_color_change_percent = 10
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=237
+let g:indentguides_state = 0
+function! IndentGuides() " {{{
+    if g:indentguides_state
+        let g:indentguides_state = 0
+        2match None
+    else
+        let g:indentguides_state = 1
+        execute '2match IndentGuides /\%(\_^\s*\)\@<=\%(\%'.(0*&sw+1).'v\|\%'.(1*&sw+1).'v\|\%'.(2*&sw+1).'v\|\%'.(3*&sw+1).'v\|\%'.(4*&sw+1).'v\|\%'.(5*&sw+1).'v\|\%'.(6*&sw+1).'v\|\%'.(7*&sw+1).'v\)\s/'
+    endif
+endfunction " }}}
 
+hi def IndentGuides guibg=#303030 ctermbg=234
 
-"----YCM
-let g:clang_library_path="/usr/lib/llvm-3.4/lib"
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-let g:ycm_key_invoke_completion = '<Enter>'
+call IndentGuides()
 
 "----Rainbow paren
 let g:rbpt_colorpairs = [
@@ -153,21 +172,48 @@ let g:multi_cursor_skip_key = '<C-x>'
 let g:multi_cursor_quit_key = '<Esc>'
 
 "----Tabular
-noremap <silent> <Bar> <Bar><Esc>:call <SID>align()<CR>a
- 
-function! s:align()
-        let p = '^\s*|\s.*\s|\s*$'
-        if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-                let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-                let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-                Tabularize/|/l1
-                normal! 0
-                call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-        endif
-endfunction
+if exists(":Tabularize")
+    nmap <Leader>a= :Tabularize /=<CR>
+    vmap <Leader>a= :Tabularize /=<CR>
+    nmap <Leader>a: :Tabularize /:\zs<CR>
+    vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
 
-"----cpp-enchanced-highlight
-"let g:cpp_class_scope_highlight = 1
+inoremap <silent> = =<Esc>:call <SID>ealign()<CR>a
+function! s:ealign()
+    let p = '^.*=\s.*$'
+    if exists(':Tabularize') && getline('.') =~# '^.*=' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+        let column = strlen(substitute(getline('.')[0:col('.')],'[^=]','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*=\s*\zs.*'))
+        Tabularize/=/l1
+        normal! 0
+        call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endif
+endfunction 
 
-"----Auto-Pairs
-let g:AutoPairsFlyMode = 1
+
+"----Neocomplecache
+let g:clang_library_path = '/usr/lib/llvm-3.4/lib/libclang.so'
+
+if !exists('g:neocomplcache_force_omni_patterns')
+    let g:neocomplcache_force_omni_patterns = {}
+endif
+let g:neocomplcache_force_overwrite_completefunc = 1
+let g:neocomplcache_force_omni_patterns.c        = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplcache_force_omni_patterns.cpp      = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplcache_force_omni_patterns.objc     = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplcache_force_omni_patterns.objcpp   = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:clang_complete_auto                        = 0
+let g:clang_auto_select                          = 0
+let g:clang_use_library                          = 1
+let g:neocomplcache_enable_at_startup            = 1
+let g:neocomplcache_enable_smart_case            = 1
+let g:neocomplcache_min_syntax_length            = 3
+                                                 
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+"----Bad-Wolf settings
+let g:badwolf_darkgutter = 1
+" Make the tab line darker than the background.
+let g:badwolf_tabline = 0
+

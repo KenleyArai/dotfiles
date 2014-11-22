@@ -1,3 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_cnt =4
 let g:netrw_dirhist_1='/home/kenley/dotfiles/vim/bundle/rainbow_parentheses.vim'
+let g:netrw_dirhist_2='/home/kenley/Desktop/repos/rshell/tests'
+let g:netrw_dirhist_3='/home/kenley/.remmina'
+let g:netrw_dirhist_4='/home/kenley/.tmux'

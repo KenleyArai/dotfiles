@@ -92,6 +92,7 @@ function __stat() {
     fi 
 }
 
+
 # Display the branch name of git repository
 # Green -> clean
 # purple -> untracked files
@@ -160,4 +161,9 @@ extract () {
           echo "'$1' is not a valid file!"
         fi
 }
+feh --bg-scale ~/Documents/onedrive/wallhaven-310.jpg
+alias tmux="TERM=screen-256color-bce tmux"
+set -o ignoreeof
+export EDITOR='vim'
 
+source ~/Documents/repos/tmuxinator/completion/tmuxinator.bash
