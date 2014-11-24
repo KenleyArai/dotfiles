@@ -1,4 +1,27 @@
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
+
+Plug 'kien/ctrlp.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'itchyny/lightline.vim'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'scrooloose/syntastic'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
+Plug 'Valloric/vim-indent-guides'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'edkolev/tmuxline.vim'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'sjl/badwolf'
+Plug 'godlygeek/tabular'
+Plug 'vasconcelloslf/vim-foldfocus'
+Plug 'myusuf3/numbers.vim'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'tpope/vim-sensible'
+
+call plug#end()
 
 filetype plugin indent on
 
@@ -6,6 +29,7 @@ filetype plugin indent on
 
 syntax enable
 "set foldmethod=syntax
+let c_no_comment_fold = 1
 colorscheme badwolf 
 
 "Setting line numbers
@@ -18,8 +42,8 @@ imap <C-e> <ESC>$a
 imap <C-a> <ESC>0^i
 
 "Yanking a single line
-map <C-y> 0v$y^
-imap <C-y> <ESC>0v$y^i
+map <C-y> yy
+imap <C-y> <ESC>yyi
 
 "Moving down a single line even if wrapped
 nnoremap j gj
@@ -69,10 +93,6 @@ nnoremap <S-H> <C-W><C-H>
 
 
 "-------------Plugin settings------------
-
-"----Tagbar
-nmap <F8> :TagbarToggle<CR>
-autocmd FileType c,cpp nested :TagbarOpen
 
 "----Easymotion
 let g:EasyMotion_smartcase = 1
@@ -158,19 +178,15 @@ let g:lightline = {
 
 "----Syntastic
 let g:syntastic_cpp_check_header = 1
-
+let g:syntastic_cpp_compiler_options = '-Wall -Werror -ansi -pedanti c-std=c++1y'
 "----Multi-Cursor
-let g:multi_cursor_use_default_mapping=0
-
 " Map start key separately from next key
 let g:multi_cursor_start_key='<C-m>'
 
-" Default mapping
-let g:multi_cursor_next_key = '<C-m>'
-let g:multi_cursor_prev_key = '<C-p>'
-let g:multi_cursor_skip_key = '<C-x>'
-let g:multi_cursor_quit_key = '<Esc>'
-
+"----Surround
+vmap { S{
+vmap ( S(
+vmap " S"
 "----Tabular
 if exists(":Tabularize")
     nmap <Leader>a= :Tabularize /=<CR>
@@ -214,6 +230,7 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 "----Bad-Wolf settings
 let g:badwolf_darkgutter = 1
-" Make the tab line darker than the background.
 let g:badwolf_tabline = 0
 
+"----Fold-focus
+nmap <Leader><CR> :call FoldFocus('e')<CR>
