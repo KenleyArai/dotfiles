@@ -16,7 +16,7 @@ link_file() {
             mkdir ~/old_dotfiles
         fi
         echo "Backing up " $NEW
-        mv $NEW ~/old_dotfiles
+        mv $OLD ~/old_dotfiles
     fi
 
     echo "Symlinking " $OLD " to " $NEW
