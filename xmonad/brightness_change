@@ -1,0 +1,32 @@
+#!/bin/bash
+
+BRIGHTNESS_PATH="/sys/devices/virtual/backlight/mba6x_backlight/brightness"
+
+vol_change ()
+{
+    if [ $1 == '+' ]; then
+        new_vol 20
+    elif [ $1 == '-' ]; then
+        new_vol -20
+    fi
+}
+
+new_vol ()
+{
+    CUR="$(cat $BRIGHTNESS_PATH)"
+    NEW="$(expr $CUR + $1)"
+    echo $NEW > $BRIGHTNESS_PATH
+}
+
+main ()
+{
+    if [ $1 ]; then
+        vol_change $1
+    fi
+}
+
+main $1
+
+CUR="$(cat brightness)"
+
+
