@@ -9,7 +9,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 Plug 'Valloric/vim-indent-guides'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
@@ -17,9 +16,13 @@ Plug 'Shougo/neocomplcache.vim'
 Plug 'sjl/badwolf'
 Plug 'godlygeek/tabular'
 Plug 'vasconcelloslf/vim-foldfocus'
-Plug 'myusuf3/numbers.vim'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'tpope/vim-sensible'
+Plug 'tomtom/tcomment_vim'
+Plug 'Konfekt/FastFold'
+Plug 'ervandew/supertab'
+Plug 'vim-scripts/YankRing.vim'
+Plug 'edkolev/promptline.vim'
 
 call plug#end()
 
@@ -28,9 +31,7 @@ filetype plugin indent on
 "-------------Non-Plugin settings-----------
 
 syntax enable
-"set foldmethod=syntax
-let c_no_comment_fold = 1
-colorscheme badwolf 
+colorscheme badwolf
 
 "Setting line numbers
 set number
@@ -64,16 +65,6 @@ set softtabstop=4
 
 "Setting leader
 let mapleader=","
-set timeout timeoutlen=1500
-
-"Fixing backspace issues
-set backspace=indent,eol,start
-
-"Setting autoindent
-set ai
-
-"Setting smart indent
-set smartindent
 
 "Setting cursorline
 set cursorline
@@ -90,22 +81,30 @@ nnoremap <S-K> <C-W><C-K>
 nnoremap <S-L> <C-W><C-L>
 nnoremap <S-H> <C-W><C-H>
 
-
+"Delete extra whitespace
+autocmd BufWritePre * %s/\s\+$//e
+"Return cursor to previous position on load
+autocmd BufReadPost * normal `""`
+"Set scroll to 10
+set scrolloff=10
+"No annoying flashing
+set visualbell t_vb=
 
 "-------------Plugin settings------------
 
 "----Easymotion
+let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
-
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to
-" EasyMotion.
-" " Without these mappings, `n` & `N` works fine. (These mappings just provide
-" " different highlight method and have some other features )
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+nmap s <Plug>(easymotion-s)
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
 
 "----Indent guides
 let g:indentguides_state = 0
@@ -120,7 +119,6 @@ function! IndentGuides() " {{{
 endfunction " }}}
 
 hi def IndentGuides guibg=#303030 ctermbg=234
-
 call IndentGuides()
 
 "----Rainbow paren
@@ -156,6 +154,7 @@ au Syntax * RainbowParenthesesLoadBraces
 set guifont=Inconsolata\ for\ powerline:h1
 set laststatus=2
 set noshowmode
+
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'active': {
@@ -179,6 +178,7 @@ let g:lightline = {
 "----Syntastic
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler_options = '-Wall -Werror -ansi -pedanti c-std=c++1y'
+
 "----Multi-Cursor
 " Map start key separately from next key
 let g:multi_cursor_start_key='<C-m>'
@@ -187,6 +187,7 @@ let g:multi_cursor_start_key='<C-m>'
 vmap { S{
 vmap ( S(
 vmap " S"
+
 "----Tabular
 if exists(":Tabularize")
     nmap <Leader>a= :Tabularize /=<CR>
@@ -205,7 +206,7 @@ function! s:ealign()
         normal! 0
         call search(repeat('[^=]*=',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
     endif
-endfunction 
+endfunction
 
 
 "----Neocomplecache
@@ -225,7 +226,7 @@ let g:clang_use_library                          = 1
 let g:neocomplcache_enable_at_startup            = 1
 let g:neocomplcache_enable_smart_case            = 1
 let g:neocomplcache_min_syntax_length            = 3
-                                                 
+
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 "----Bad-Wolf settings
@@ -234,3 +235,7 @@ let g:badwolf_tabline = 0
 
 "----Fold-focus
 nmap <Leader><CR> :call FoldFocus('e')<CR>
+
+"----tcomment"
+vmap <Leader>c :TComment<CR>
+nmap <Leader>c :TComment<CR>
