@@ -53,4 +53,6 @@ do
     link_dotfile $FILE
 done
 
+link_dotfile dir_colors
+
 source vim/vim/install.sh
