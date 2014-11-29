@@ -5,22 +5,20 @@ DOTFILES=('vim' 'tmux' 'xmonad' 'bash')
 
 link_file() {
 
-    local OLD=$1
-    local NEW=$2
+    local SRC=$1
+    local DST=$2
 
-    if [ -d $NEW -o -f $NEW -o -L $NEW ]
+    if [ -d $DST -o -f $DST -o -L $DST ]
     then
         if [ ! -d ~/old_dotfiles ]
         then
             echo "Creating backup file ~/old_dotfiles"
             mkdir ~/old_dotfiles
         fi
-        echo "Backing up " $NEW
-        mv $OLD ~/old_dotfiles
+        echo "Backing up " $DST
+        mv $DST ~/old_dotfiles/
     fi
-
-    echo "Symlinking " $OLD " to " $NEW
-    ln -s $OLD $NEW
+    ln -s $SRC $DST
 }
 
 link_dotfile() {
@@ -30,23 +28,24 @@ link_dotfile() {
 
     for file in ${DIRS[@]}
     do
-        local of=$HOME"/."${file#*/*}
-        local lf=$PWD"/"${file%/}
-        lf=${lf%/}
+        local src=$PWD"/"${file%/}
+        local dst=$HOME"/."${file#*/*}
+        dst=${dst%/}
 
-        printf '%s -> %s\n' $lf $of
-        link_file $of $lf
+        printf '%s -> %s\n' $src $dst
+        link_file $src $dst
     done
 
     for file in ${FILES[@]}
     do
-        local of=$HOME"/."${file##*/}
-        local lf=$PWD"/"$file
+        local src=$PWD"/"$file
+        local dst=$HOME"/."${file##*/}
 
-        printf '%s -> %s\n' $lf $of
-        link_file $lf $of
+        printf '%s -> %s\n' $src $dst
+        link_file $src $dst
     done
 
+    printf '\n'
 }
 
 for FILE in "${DOTFILES[@]}"
