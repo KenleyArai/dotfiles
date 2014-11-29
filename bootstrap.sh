@@ -53,3 +53,5 @@ for FILE in "${DOTFILES[@]}"
 do
     link_dotfile $FILE
 done
+
+source vim/vim/install.sh
