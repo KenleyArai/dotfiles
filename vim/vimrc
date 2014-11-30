@@ -24,11 +24,12 @@ Plug 'mattn/webapi-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'Rip-Rip/clang_complete'
 Plug 'Shougo/neocomplcache.vim'
-Plug 'jpalardy/vim-slime'
+Plug 'tpope/vim-rsi'
 
 call plug#end()
 
 set nocp
+set clipboard=unnamedplus
 filetype plugin indent on
 
 "-------------Non-Plugin settings-----------
