@@ -155,4 +155,6 @@ alias tmux="TERM=screen-256color-bce tmux"
 set -o ignoreeof
 export EDITOR='vim'
 
+source tmuxinator.bash
+
 source ~/.shell_prompt.sh
