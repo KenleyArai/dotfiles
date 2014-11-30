@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Dotfiles that will be bootstrapped
-DOTFILES=('vim' 'tmux' 'xmonad' 'bash')
+DOTFILES=('vim' 'tmux' 'bash')
 
 link_file() {
 
