@@ -158,3 +158,4 @@ export EDITOR='vim'
 source tmuxinator.bash
 
 source ~/.shell_prompt.sh
+
