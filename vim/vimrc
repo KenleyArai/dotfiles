@@ -25,7 +25,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'Rip-Rip/clang_complete'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'tpope/vim-rsi'
-"Plug 'sjl/gundo.vim'
+Plug 'sjl/gundo.vim'
 
 call plug#end()
 
@@ -363,4 +363,4 @@ let g:promptline_preset = {
         \'warn' : [ promptline#slices#last_exit_code()]}
 
 "----Gundo
-"nnoremap <F5> :GundoToggle<CR>
+nnoremap <F5> :GundoToggle<CR>

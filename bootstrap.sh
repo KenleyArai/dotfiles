@@ -56,4 +56,4 @@ done
 link_dotfile dir_colors
 link_dotfile gitconfig
 
-source vim/vim/install.sh
+source vim/install.sh
