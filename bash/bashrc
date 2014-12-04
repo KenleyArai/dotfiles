@@ -1,18 +1,5 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
-
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
 # append to the history file, don't overwrite it
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -21,34 +8,34 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+xmodmap ~/.xmodmaprc
+set -o ignoreeof
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# make bash autocomplete with up arrow
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
+# make tab cycle through commands instead of listing
+bind '"\t":menu-complete'
+
+# Setting default term to use 256 colors
+TERM=gnome-256color
+color_prompt=yes
+
+# Default editor
+export EDITOR='vim'
+
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-TERM=gnome-256color
-
-color_prompt=yes
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dir_colors && eval "$(dircolors -b ~/.dir_colors)" || eval "$(dircolors -b)"
-    alias ls='ls -h --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -62,37 +49,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
-xmodmap ~/.xmodmaprc
+if [ -f ~/.bash_aliases ]; then
+    source ~/.bash_aliases
+fi
 
-# Added for Extraction
-extract () {
-   if [ -f $1 ] ; then
-        case $1 in
-              *.tar.bz2)     tar xvjf $1    ;;
-              *.tar.gz)      tar xvzf $1    ;;
-              *.tar.xz)      tar xvjf $1     ;;
-              *.bz2)         bunzip2 $1     ;;
-              *.rar)         rar x $1       ;;
-              *.gz)          gunzip $1      ;;
-              *.tar)         tar xvf $1     ;;
-              *.tbz2)        tar xvjf $1    ;;
-              *.zip)         unzip $1       ;;
-              *.Z)           uncompress $1  ;;
-              *.7z)          7z x $1        ;;
-              *)             echo "don't know how to extract '%1'..."
-          esac
-        else
-          echo "'$1' is not a valid file!"
-        fi
-}
-
-alias tmux="TERM=screen-256color-bce tmux"
-
-set -o ignoreeof
-
-export EDITOR='vim'
+if [ -f ~/.funcs ]; then
+    source ~/.funcs
+fi
 
 source tmuxinator.bash
-
 source ~/.shell_prompt.sh
-
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

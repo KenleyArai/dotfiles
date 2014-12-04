@@ -24,6 +24,8 @@ Plug 'Shougo/neocomplcache.vim'
 Plug 'tpope/vim-rsi'
 Plug 'sjl/gundo.vim'
 Plug 'altercation/vim-colors-solarized'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'rstacruz/vim-opinion'
 
 call plug#end()
 
@@ -35,8 +37,21 @@ syntax enable
 set background=light
 colorscheme solarized
 
-"Setting line numbers
-set number
+"Setting leader
+let mapleader=","
+
+"Clipboard copying and pasting
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
+set undofile                " Save undo's after file closes
+set undodir=$HOME/.vim/undo " where to save undo histories
+set undolevels=1000         " How many undos
+set undoreload=10000        " number of lines to save for undo
 
 "Changing movement to be like bash
 map <C-e> $
@@ -51,17 +66,6 @@ nnoremap k gk
 "Adding newlines without entering insert mode
 nmap O O<Esc>
 nmap o o<Esc>k
-
-"Setting indenting
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-
-"Setting leader
-let mapleader=","
-
-"Setting cursorline
-set cursorline
 
 "Movement between screens
 nnoremap <S-J> <C-W><C-J>
@@ -79,6 +83,10 @@ autocmd BufReadPost * normal `""`
 set visualbell t_vb=
 
 "-------------Plugin settings------------
+"----sensible
+runtime! plugin/sensible.vim
+runtime! plugin/opinion.vim
+
 
 "----Easymotion
 let g:EasyMotion_do_mapping = 0
@@ -305,3 +313,6 @@ let g:promptline_preset = {
 " toggle gundo
 nnoremap <leader>u :GundoToggle<CR>
 
+"----Rainbow Paren
+au VimEnter * RainbowParentheses
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
