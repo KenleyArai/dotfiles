@@ -1,41 +1,64 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'kien/ctrlp.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'itchyny/lightline.vim'
-Plug 'scrooloose/syntastic'
-Plug 'Lokaltog/vim-easymotion'
-Plug 'airblade/vim-gitgutter'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'edkolev/tmuxline.vim'
-Plug 'godlygeek/tabular'
-Plug 'MattesGroeger/vim-bookmarks'
+" Sensible defaults
 Plug 'tpope/vim-sensible'
-Plug 'tomtom/tcomment_vim'
-Plug 'ervandew/supertab'
-Plug 'edkolev/promptline.vim'
+Plug 'rstacruz/vim-opinion'
+
+" colors
+Plug 'altercation/vim-colors-solarized'
+Plug 'junegunn/rainbow_parentheses.vim'
+
+" movement
+Plug 'Lokaltog/vim-easymotion'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'kien/ctrlp.vim'
+
+" git
+Plug 'airblade/vim-gitgutter'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'tpope/vim-fugitive'
+
+" visual
+Plug 'edkolev/promptline.vim'
+Plug 'bling/vim-airline'
+Plug 'bling/vim-bufferline'
+Plug 'junegunn/limelight.vim'
+
+" editing
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/syntastic'
+Plug 'tomtom/tcomment_vim'
+Plug 'ervandew/supertab'
 Plug 'Rip-Rip/clang_complete'
 Plug 'Shougo/neocomplcache.vim'
-Plug 'tpope/vim-rsi'
 Plug 'sjl/gundo.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'rstacruz/vim-opinion'
+Plug 'junegunn/vim-easy-align'
+
+" tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'edkolev/tmuxline.vim'
 
 call plug#end()
 
-filetype indent on
-
 "-------------Non-Plugin settings-----------
 
-syntax enable
+set nocompatible
+filetype plugin indent on
+
+" colors and fonts
 set background=light
 colorscheme solarized
+set guifont=Inconsolata\ for\ powerline:h1
+let g:solarized_visibility="high"
+
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
 
 "Setting leader
 let mapleader=","
@@ -43,17 +66,17 @@ let mapleader=","
 "Clipboard copying and pasting
 vmap <Leader>y "+y
 vmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+nmap <Leader>p "+P
+nmap <Leader>P "+p
+vmap <Leader>p "+P
+vmap <Leader>P "+p
 
 set undofile                " Save undo's after file closes
 set undodir=$HOME/.vim/undo " where to save undo histories
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
 
-"Changing movement to be like bash
+"Changing movement to be like emacs
 map <C-e> $
 map <C-a> ^
 imap <C-e> <ESC>$a
@@ -68,10 +91,10 @@ nmap O O<Esc>
 nmap o o<Esc>k
 
 "Movement between screens
-nnoremap <S-J> <C-W><C-J>
-nnoremap <S-K> <C-W><C-K>
-nnoremap <S-L> <C-W><C-L>
-nnoremap <S-H> <C-W><C-H>
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 "Delete extra whitespace
 autocmd BufWritePre * %s/\s\+$//e
@@ -87,6 +110,11 @@ set visualbell t_vb=
 runtime! plugin/sensible.vim
 runtime! plugin/opinion.vim
 
+" overwriting opinion/sensible defaults
+set mouse=""      " disable mouse
+set foldnestmax=1 " fold only 1 deep
+set noshowmode    " noshow for lightline
+set so=999        " keeping cursor in center of the screen
 
 "----Easymotion
 let g:EasyMotion_do_mapping = 0
@@ -104,126 +132,6 @@ map <Leader>k <Plug>(easymotion-k)
 map <Leader>h <Plug>(easymotion-linebackward)
 
 let g:EasyMotion_startofline = 0
-
-
-"----Lightline
-set guifont=Inconsolata\ for\ powerline:h1
-set noshowmode
-
-let g:lightline = {
-      \ 'colorscheme': 'solarized',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'MyFugitive',
-      \   'filename': 'MyFilename',
-      \   'fileformat': 'MyFileformat',
-      \   'filetype': 'MyFiletype',
-      \   'fileencoding': 'MyFileencoding',
-      \   'mode': 'MyMode',
-      \   'ctrlpmark': 'CtrlPMark',
-      \ },
-      \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-      \ }
-
-function! MyModified()
-    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-
-function! MyReadonly()
-    return &ft !~? 'help' && &readonly ? '' : ''
-endfunction
-
-function! MyFilename()
-    let fname = expand('%:t')
-    return fname == 'ControlP' ? g:lightline.ctrlp_item :
-                \ fname =~ '__Gundo\|NERD_tree' ? '' :
-                \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-                \ ('' != fname ? fname : '[No Name]') .
-                \ ('' != MyModified() ? ' ' . MyModified() : '')
-endfunction
-
-function! MyFugitive()
-    try
-        if expand('%:t') !~? 'Gundo' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-            let mark = ''  " edit here for cool mark
-            let _ = fugitive#head()
-            return strlen(_) ? mark._ : ''
-        endif
-    catch
-    endtry
-    return ''
-endfunction
-
-function! MyFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
-function! MyFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction
-
-function! MyFileencoding()
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-endfunction
-
-function! MyMode()
-    let fname = expand('%:t')
-    return  fname == 'ControlP' ? 'CtrlP' :
-            \ fname == '__Gundo__' ? 'Gundo' :
-            \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-            \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-function! CtrlPMark()
-    if expand('%:t') =~ 'ControlP'
-        call lightline#link('iR'[g:lightline.ctrlp_regex])
-        return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                    \ , g:lightline.ctrlp_next], 0)
-    else
-        return ''
-    endif
-endfunction
-
-let g:ctrlp_status_func = {
-            \ 'main': 'CtrlPStatusFunc_1',
-            \ 'prog': 'CtrlPStatusFunc_2',
-            \ }
-
-function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-    let g:lightline.ctrlp_regex = a:regex
-    let g:lightline.ctrlp_prev = a:prev
-    let g:lightline.ctrlp_item = a:item
-    let g:lightline.ctrlp_next = a:next
-    return lightline#statusline(0)
-endfunction
-
-function! CtrlPStatusFunc_2(str)
-    return lightline#statusline(0)
-endfunction
-
-augroup AutoSyntastic
-    autocmd!
-    autocmd BufWritePost *.c,*.cpp call s:syntastic()
-augroup END
-
-function! s:syntastic()
-    SyntasticCheck
-    call lightline#update()
-endfunction
-
-let g:unite_force_overwrite_statusline = 0
-let g:vimfiler_force_overwrite_statusline = 0
-let g:vimshell_force_overwrite_statusline = 0
 
 "----Syntastic
 let g:syntastic_cpp_check_header     = 1
@@ -258,14 +166,6 @@ vmap <Leader>( S(
 vmap <Leader>" S"
 vmap <Leader>' S'
 
-"----Tabular
-if exists(":Tabularize")
-    nmap <Leader>a= :Tabularize /=<CR>
-    vmap <Leader>a= :Tabularize /=<CR>
-    nmap <Leader>a: :Tabularize /:\zs<CR>
-    vmap <Leader>a: :Tabularize /:\zs<CR>
-endif
-
 "----tcomment"
 vmap <Leader>c :TComment<CR>
 nmap <Leader>c :TComment<CR>
@@ -286,28 +186,34 @@ let g:neocomplcache_force_omni_patterns.c =
       \ '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplcache_force_omni_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:clang_complete_auto = 0
+
+let g:clang_complete_auto = 1
 let g:clang_auto_select = 0
 
 "----Supertab
 
+"----CtrlP
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 "----tmuxline
-let g:tmuxline_preset = {
-      \'a'    : '#W',
-      \'c'    : '#H',
-      \'win'  : '#W',
-      \'cwin' : '#W',
-      \'x'    : '%a',
-      \'y'    : '#W %R',
-      \'z'    : '#H'}
+let g:tmuxline_preset = {'a'    : '#W',
+                        \'c'    : '#H',
+                        \'win'  : '#W',
+                        \'cwin' : '#W',
+                        \'x'    : '%a',
+                        \'y'    : '#W %R',
+                        \'z'    : '#H'}
+
+"----Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 
 "----promptline
-let g:promptline_theme = 'lightline'
-let g:promptline_preset = {
-        \'a' : [ promptline#slices#host()  ],
-        \'b' : [ promptline#slices#user()  ],
-        \'y' : [ promptline#slices#vcs_branch()  ],
-        \'warn' : [ promptline#slices#last_exit_code()]}
+let g:promptline_theme = 'airline'
+let g:promptline_preset = {'a' : [ promptline#slices#host()  ],
+                          \'b' : [ promptline#slices#user()  ],
+                          \'y' : [ promptline#slices#vcs_branch()  ],
+                          \'warn' : [ promptline#slices#last_exit_code()]}
 
 "----Gundo
 " toggle gundo
@@ -316,3 +222,18 @@ nnoremap <leader>u :GundoToggle<CR>
 "----Rainbow Paren
 au VimEnter * RainbowParentheses
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+
+"----Easy-Align
+vmap <Enter> <Plug>(EasyAlign)
+
+"----Limelight
+au VimEnter * Limelight
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+" Color name (:help gui-colors) or RGB color
+let g:limelight_conceal_guifg = 'DarkGray'
+let g:limelight_conceal_guifg = '#777777'
+
+" Default: 0.5
+let g:limelight_default_coefficient = 0.7
