@@ -1,3 +1,5 @@
 vim/vim/.netrwhist
 vim/vim/plugged
 tmux/tmux/plugins
+*.pyc
+*/*.pyc
