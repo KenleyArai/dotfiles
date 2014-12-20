@@ -10,32 +10,42 @@ Plug 'junegunn/rainbow_parentheses.vim'
 
 " movement
 Plug 'Lokaltog/vim-easymotion'
-Plug 'MattesGroeger/vim-bookmarks'
 Plug 'kien/ctrlp.vim'
+Plug 'bkad/CamelCaseMotion'
 
 " git
 Plug 'airblade/vim-gitgutter'
-Plug 'mattn/gist-vim'
-Plug 'mattn/webapi-vim'
-Plug 'tpope/vim-fugitive'
 
 " visual
 Plug 'edkolev/promptline.vim'
 Plug 'bling/vim-airline'
-Plug 'bling/vim-bufferline'
-Plug 'junegunn/limelight.vim'
+Plug 'Yggdroot/indentLine'
+Plug 'myusuf3/numbers.vim'
 
 " editing
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
-Plug 'ervandew/supertab'
-Plug 'Rip-Rip/clang_complete'
-Plug 'Shougo/neocomplcache.vim'
-Plug 'sjl/gundo.vim'
-Plug 'junegunn/vim-easy-align'
+Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+
+" Markdown
+Plug 'suan/vim-instant-markdown'
+Plug 'plasticboy/vim-markdown'
+Plug 'gabrielelana/vim-markdown'
+Plug 'pprovost/vim-markdown-jekyll'
+
+" Python
+Plug 'hdima/python-syntax'
+
+" Haskell
+Plug 'vim-scripts/haskell.vim'
+Plug 'eagletmt/neco-ghc'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'Twinside/vim-haskellConceal'
+Plug 'Shougo/vimproc.vim'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -49,46 +59,8 @@ set nocompatible
 filetype plugin indent on
 
 " colors and fonts
-set background=light
+set background=dark
 colorscheme solarized
-set guifont=Inconsolata\ for\ powerline:h1
-let g:solarized_visibility="high"
-
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
-
-"Setting leader
-let mapleader=","
-
-"Clipboard copying and pasting
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>p "+P
-nmap <Leader>P "+p
-vmap <Leader>p "+P
-vmap <Leader>P "+p
-
-set undofile                " Save undo's after file closes
-set undodir=$HOME/.vim/undo " where to save undo histories
-set undolevels=1000         " How many undos
-set undoreload=10000        " number of lines to save for undo
-
-"Changing movement to be like emacs
-map <C-e> $
-map <C-a> ^
-imap <C-e> <ESC>$a
-imap <C-a> <ESC>^i
-
-"Moving down a single line even if wrapped
-nnoremap j gj
-nnoremap k gk
-
-"Adding newlines without entering insert mode
-nmap O O<Esc>
-nmap o o<Esc>k
 
 "Movement between screens
 nnoremap <C-h> <C-w>h
@@ -96,11 +68,19 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
+
 "Delete extra whitespace
 autocmd BufWritePre * %s/\s\+$//e
 
 "Return cursor to previous position on load
 autocmd BufReadPost * normal `""`
+
+autocmd BufWritePost *.hs GhcModCheckAndLintAsync
 
 "No annoying flashing
 set visualbell t_vb=
@@ -110,13 +90,83 @@ set visualbell t_vb=
 runtime! plugin/sensible.vim
 runtime! plugin/opinion.vim
 
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+noremap h <NOP>
+noremap j <NOP>
+noremap k <NOP>
+noremap l <NOP>
+
 " overwriting opinion/sensible defaults
 set mouse=""      " disable mouse
 set foldnestmax=1 " fold only 1 deep
 set noshowmode    " noshow for lightline
-set so=999        " keeping cursor in center of the screen
+set tabstop=4                   "A tab is 8 spaces
+set expandtab                   "Always uses spaces instead of tabs
+set softtabstop=4               "Insert 4 spaces when tab is pressed
+set shiftwidth=4                "An indent is 4 spaces
+set shiftround                  "Round indent to nearest shiftwidth multiple
+"
+"Setting leader
+let mapleader=","
+
+"Changing movement to be like emacs
+map <C-e> $
+map <C-a> ^
+imap <C-e> <ESC>$a
+imap <C-a> <ESC>^i
+
+"Adding newlines without entering insert mode
+nmap O O<Esc>
+nmap o o<Esc>k
+
+" Sign Column made by solarized color is strange, clear it.
+ highlight clear SignColumn
+" " vim-gitgutter will use Sign Column to set its color, reload it.
+ call gitgutter#highlight#define_highlights()"
+
+"----Indenline
+let g:indentLine_char = '¦'
+
+"----Neocomplete
+let g:neocomplete#enable_at_startup = 1
+"
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 
 "----Easymotion
+" Disable default mapping
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 
@@ -138,28 +188,6 @@ let g:syntastic_cpp_check_header     = 1
 let g:syntastic_cpp_compiler         = 'g++'
 let g:syntastic_cpp_compiler_options = '-std=c++11'
 
-"----Multi-Cursor
-" Map start key separately from next key
-let g:multi_cursor_use_default_mapping=0
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-
-" Called once right before you start selecting multiple cursors
-function! Multiple_cursors_before()
-  if exists(':NeoCompleteLock')==2
-    exe 'NeoCompleteLock'
-  endif
-endfunction
-
-" Called once only when the multiple selection is canceled (default <Esc>)
-function! Multiple_cursors_after()
-  if exists(':NeoCompleteUnlock')==2
-    exe 'NeoCompleteUnlock'
-  endif
-endfunction
-
 "----Surround
 vmap <Leader>{ S{
 vmap <Leader>( S(
@@ -169,28 +197,6 @@ vmap <Leader>' S'
 "----tcomment"
 vmap <Leader>c :TComment<CR>
 nmap <Leader>c :TComment<CR>
-
-"----ClangComplete
-let g:clang_use_library=1
-let g:clang_library_path='/usr/lib/libclang'
-
-"----Neocompletecache
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-
-if !exists('g:neocomplcache_force_omni_patterns')
-  let g:neocomplcache_force_omni_patterns = {}
-endif
-let g:neocomplcache_force_overwrite_completefunc = 1
-let g:neocomplcache_force_omni_patterns.c =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplcache_force_omni_patterns.cpp =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-let g:clang_complete_auto = 1
-let g:clang_auto_select = 0
-
-"----Supertab
 
 "----CtrlP
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -205,35 +211,11 @@ let g:tmuxline_preset = {'a'    : '#W',
                         \'z'    : '#H'}
 
 "----Airline
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 "----promptline
 let g:promptline_theme = 'airline'
-let g:promptline_preset = {'a' : [ promptline#slices#host()  ],
-                          \'b' : [ promptline#slices#user()  ],
-                          \'y' : [ promptline#slices#vcs_branch()  ],
-                          \'warn' : [ promptline#slices#last_exit_code()]}
-
-"----Gundo
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
-
 "----Rainbow Paren
 au VimEnter * RainbowParentheses
-let g:rainbow#pairs = [['(', ')'], ['[', ']']]
-
-"----Easy-Align
-vmap <Enter> <Plug>(EasyAlign)
-
-"----Limelight
-au VimEnter * Limelight
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
-
-" Color name (:help gui-colors) or RGB color
-let g:limelight_conceal_guifg = 'DarkGray'
-let g:limelight_conceal_guifg = '#777777'
-
-" Default: 0.5
-let g:limelight_default_coefficient = 0.7
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['"', '"']]
+let g:rainbow#max_level = 16

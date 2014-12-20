@@ -1,8 +1,4 @@
-# enable color support of ls and also add handy aliases
-eval "$(dircolors -b ~/.dir_colors)"
-alias ls='ls -h --color=auto'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
+alias ls='ls -G'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -10,6 +6,8 @@ alias egrep='egrep --color=auto'
 
 # correct colors for tmux
 alias tmux="TERM=screen-256color-bce tmux"
+
+alias ls='gls --color=auto'
 
 # easier cd movement
 alias ..="cd .."

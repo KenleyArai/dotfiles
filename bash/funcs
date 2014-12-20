@@ -19,3 +19,16 @@ extract () {
           echo "'$1' is not a valid file!"
         fi
 }
+
+j_new_post () {
+    local POST_DATE=$(date +"%Y-%m-%d")
+    local TITLE=$(echo $1 | tr - " ")
+    local FILENAME=$POST_DATE-$1.md
+
+    touch $FILENAME
+    echo "---" > $FILENAME
+    echo "layout: post" >> $FILENAME
+    echo "title: $TITLE" >> $FILENAME
+    echo "---" >> $FILENAME
+}
+

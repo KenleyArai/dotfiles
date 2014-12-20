@@ -22,15 +22,15 @@ link_file() {
 }
 
 link_dotfile() {
-    local DF    = $1
-    local DIRS  = ($(ls -d $DF/*/))
-    local FILES = ($(find $DF -maxdepth 1 -type f))
+    local DF=$1
+    local DIRS=($(ls -d $DF/*/))
+    local FILES=($(find $DF -maxdepth 1 -type f))
 
     for file in ${DIRS[@]}
     do
-        local src = $PWD"/"${file%/}
-        local dst = $HOME"/."${file#*/*}
-        dst       = ${dst%/}
+        local src=$PWD"/"${file%/}
+        local dst=$HOME"/."${file#*/*}
+        dst=${dst%/}
 
         printf '%s -> %s\n' $src $dst
         link_file $src $dst
