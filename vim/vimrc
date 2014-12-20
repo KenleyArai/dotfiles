@@ -203,18 +203,18 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 "----tmuxline
 let g:tmuxline_preset = {'a'    : '#W',
-                        \'c'    : '#H',
-                        \'win'  : '#W',
-                        \'cwin' : '#W',
-                        \'x'    : '%a',
-                        \'y'    : '#W %R',
-                        \'z'    : '#H'}
+                        \'y'    : '#W %R'}
 
 "----Airline
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tmuxline#enabled = 0
 
 "----promptline
 let g:promptline_theme = 'airline'
+let g:promptline_preset = {
+    \'a' : [promptline#slices#vcs_branch()],
+    \'b' : [promptline#slices#git_status()]}
+
 "----Rainbow Paren
 au VimEnter * RainbowParentheses
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['"', '"']]
