@@ -88,7 +88,6 @@ autocmd BufWritePre * %s/\s\+$//e
 
 "Return cursor to previous position on load
 autocmd BufReadPost * normal `""`
-
 autocmd BufWritePost *.hs GhcModCheckAndLintAsync
 
 "No annoying flashing
