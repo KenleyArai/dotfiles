@@ -1,9 +1,0 @@
-[user]
-	email = karai001@ucr.edu
-	name  = Kenley Arai
-[core]
-	editor = vim
-[push]
-	default = simple
-[github]
-	user = KenleyArai

@@ -18,6 +18,7 @@ BINARIES=(
   automake
   wget
   pkg-config
+  reattach-to-user-namespace
 )
 
 # Cask applications

@@ -30,9 +30,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 
-" Arduino
-Plug 'tclem/vim-arduino'
-
 call plug#end()
 
 "----------------------------------------[Basic settings]----------------------------------------
@@ -47,7 +44,7 @@ set encoding=utf-8
 scriptencoding utf-8
 
 syntax enable
-set background=dark
+set background=light
 colorscheme solarized
 
 set clipboard=unnamed
@@ -78,6 +75,7 @@ nmap o o<Esc>k
 highlight clear SignColumn
 " vim-gitgutter will use Sign Column to set its color, reload it.
 call gitgutter#highlight#define_highlights()"
+
 
 "---------------------------------------[Plugin Settings]----------------------------------------
 "--------[Sensible]--------
@@ -157,11 +155,10 @@ let g:tmuxline_preset = {'a'    : '#W',
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tmuxline#enabled = 1
 
-"--------[Arduino]--------
-au BufRead,BufNewFile *.pde set filetype=arduino
-au BufRead,BufNewFile *.ino set filetype=arduino
-
 "--------[RainbowParen]--------
 au VimEnter * RainbowParentheses
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}'], ['"', '"']]
 let g:rainbow#max_level = 16
+
+"--------[tmux-navigator]--------
+let g:tmux_navigator_save_on_switch = 1
