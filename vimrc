@@ -7,13 +7,13 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/rainbow_parentheses.vim'
 
 " Edit
-Plug 'Shougo/neosnippet-snippets'
-Plug 'Shougo/neosnippet.vim'
+Plug 'SirVer/ultisnips'
 Plug 'Shougo/neocomplete.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
 Plug 'rizzatti/dash.vim'
+Plug 'lervag/vim-latex'
 
 " Visual
 Plug 'bling/vim-airline'
@@ -29,6 +29,9 @@ Plug 'airblade/vim-gitgutter'
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
+
+" Latex
+Plug 'xuhdev/vim-latex-live-preview'
 
 call plug#end()
 
@@ -112,19 +115,6 @@ inoremap <expr><C-e>  neocomplete#cancel_popup()
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
 
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-
 "--------[EasyMotion]--------
 " Disable default mapping
 let g:EasyMotion_do_mapping = 0
@@ -162,3 +152,11 @@ let g:rainbow#max_level = 16
 
 "--------[tmux-navigator]--------
 let g:tmux_navigator_save_on_switch = 1
+
+"--------[Ultisnips]--------
+let g:UltiSnipsExpandTrigger="<tab>"
+
+"--------[Latex Live Preview]--------
+autocmd Filetype tex setl updatetime=10000
+let g:livepreview_previewer = 'open -a Skim'
+
