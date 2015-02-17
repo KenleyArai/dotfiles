@@ -14,6 +14,7 @@ Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
 Plug 'rizzatti/dash.vim'
 Plug 'lervag/vim-latex'
+Plug 'junegunn/vim-easy-align'
 
 " Visual
 Plug 'bling/vim-airline'
@@ -36,6 +37,16 @@ Plug 'xuhdev/vim-latex-live-preview'
 call plug#end()
 
 "----------------------------------------[Basic settings]----------------------------------------
+
+"--------[Sensible]--------
+runtime! plugin/sensible.vim
+set mouse=""
+set noshowmode
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set shiftround
 
 " No Vi compatibility mode
 set nocompatible
@@ -79,17 +90,8 @@ highlight clear SignColumn
 " vim-gitgutter will use Sign Column to set its color, reload it.
 call gitgutter#highlight#define_highlights()"
 
-
+set nofoldenable    " disable folding"
 "---------------------------------------[Plugin Settings]----------------------------------------
-"--------[Sensible]--------
-runtime! plugin/sensible.vim
-set mouse=""
-set noshowmode
-set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set shiftround
 
 "--------[IndentLine]--------
 let g:indentLine_char = '¦'
@@ -157,6 +159,9 @@ let g:tmux_navigator_save_on_switch = 1
 let g:UltiSnipsExpandTrigger="<tab>"
 
 "--------[Latex Live Preview]--------
-autocmd Filetype tex setl updatetime=10000
+autocmd Filetype tex setl updatetime=5000
 let g:livepreview_previewer = 'open -a Skim'
 
+
+"--------[Align]--------
+vnoremap <silent> <Enter> :EasyAlign<cr>
