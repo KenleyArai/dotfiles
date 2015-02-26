@@ -7,8 +7,8 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/rainbow_parentheses.vim'
 
 " Edit
-Plug 'SirVer/ultisnips'
 Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neosnippet.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
@@ -90,6 +90,10 @@ highlight clear SignColumn
 " vim-gitgutter will use Sign Column to set its color, reload it.
 call gitgutter#highlight#define_highlights()"
 
+" Autosave when leaving insertmode
+autocmd InsertLeave * if expand('%') != '' | update | endif
+
+
 set nofoldenable    " disable folding"
 "---------------------------------------[Plugin Settings]----------------------------------------
 
@@ -97,16 +101,12 @@ set nofoldenable    " disable folding"
 let g:indentLine_char = '¦'
 
 "--------[Neocomplete]--------
+let g:acp_enableAtStartup = 0
+
 let g:neocomplete#enable_at_startup = 1
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#close_popup() . "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
@@ -116,6 +116,33 @@ inoremap <expr><C-e>  neocomplete#cancel_popup()
 
 " AutoComplPop like behavior.
 let g:neocomplete#enable_auto_select = 1
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-y>" : "\<TAB>"
+
+"--------[neosnippet]---------
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 
 "--------[EasyMotion]--------
 " Disable default mapping
@@ -155,13 +182,9 @@ let g:rainbow#max_level = 16
 "--------[tmux-navigator]--------
 let g:tmux_navigator_save_on_switch = 1
 
-"--------[Ultisnips]--------
-let g:UltiSnipsExpandTrigger="<tab>"
-
 "--------[Latex Live Preview]--------
 autocmd Filetype tex setl updatetime=5000
 let g:livepreview_previewer = 'open -a Skim'
-
 
 "--------[Align]--------
 vnoremap <silent> <Enter> :EasyAlign<cr>
