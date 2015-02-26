@@ -23,7 +23,7 @@ if [[ $UNAME == 'Darwin' ]]; then
 fi
 
 antigen use oh-my-zsh
-antigen theme caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+source ~/.shell_prompt.sh
 
 antigen apply
 

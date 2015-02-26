@@ -19,6 +19,7 @@ Plug 'junegunn/vim-easy-align'
 " Visual
 Plug 'bling/vim-airline'
 Plug 'Yggdroot/indentLine'
+Plug 'edkolev/promptline.vim'
 
 " Movement
 Plug 'Lokaltog/vim-easymotion'
@@ -43,9 +44,9 @@ runtime! plugin/sensible.vim
 set mouse=""
 set noshowmode
 set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set shiftround
 
 " No Vi compatibility mode
@@ -167,8 +168,12 @@ vmap <Leader>c :TComment<CR>
 nmap <Leader>c :TComment<CR>
 
 "--------[Tmuxline]--------
-let g:tmuxline_preset = {'a'    : '#W',
-                        \'y'    : '#W %R'}
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'y'    : ['%R', '%a', '%Y'],
+      \'z'    : '#H'}
 
 "--------[Airline]--------
 let g:airline_powerline_fonts = 1
