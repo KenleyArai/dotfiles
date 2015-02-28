@@ -29,3 +29,5 @@ antigen apply
 
 export EDITOR=/usr/local/bin/vim
 alias tmux="TERM=screen-256color-bce tmux"
+
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"

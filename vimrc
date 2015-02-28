@@ -94,8 +94,23 @@ call gitgutter#highlight#define_highlights()"
 " Autosave when leaving insertmode
 autocmd InsertLeave * if expand('%') != '' | update | endif
 
+" disable folding
+set nofoldenable    
 
-set nofoldenable    " disable folding"
+" Save .swp and backups to a more sane place
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
+
+
+
+
+" Because I close vim sometimes
+set undofile
+set undolevels=1000 
+set undoreload=10000
+
+
 "---------------------------------------[Plugin Settings]----------------------------------------
 
 "--------[IndentLine]--------
@@ -193,3 +208,12 @@ let g:livepreview_previewer = 'open -a Skim'
 
 "--------[Align]--------
 vnoremap <silent> <Enter> :EasyAlign<cr>
+
+"--------[Promptline]--------
+let g:promptline_theme = 'airline'
+let g:promptline_preset = {
+        \'a'    : [ '$USER' ],
+        \'b'    : [ promptline#slices#cwd() ],
+        \'c'    : [ promptline#slices#vcs_branch() ],
+        \'warn' : [ promptline#slices#last_exit_code() ],
+        \'z'    : [ promptline#slices#host() ]}
