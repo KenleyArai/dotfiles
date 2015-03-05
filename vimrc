@@ -15,6 +15,8 @@ Plug 'tomtom/tcomment_vim'
 Plug 'rizzatti/dash.vim'
 Plug 'lervag/vim-latex'
 Plug 'junegunn/vim-easy-align'
+Plug 'scrooloose/nerdtree'
+
 
 " Visual
 Plug 'bling/vim-airline'
@@ -58,7 +60,7 @@ filetype plugin indent on
 set encoding=utf-8
 scriptencoding utf-8
 
-syntax enable
+syntax on
 set background=light
 colorscheme solarized
 
@@ -77,10 +79,24 @@ augroup END
 let g:mapleader=","
 
 "Changing movement to be like emacs
-map <C-e> $
-map <C-a> ^
+nmap <C-e> $
+nmap <C-a> ^
+vmap <C-e> $
+vmap <C-a> ^
 imap <C-e> <ESC>$a
 imap <C-a> <ESC>^i
+
+" Jump multiple lines
+nnoremap J 15j
+nnoremap K 15k
+xnoremap J 15j
+xnoremap K 15k
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+set showbreak=⇇
 
 "Adding newlines without entering insert mode
 nmap O O<Esc>
@@ -94,20 +110,37 @@ call gitgutter#highlight#define_highlights()"
 " Autosave when leaving insertmode
 autocmd InsertLeave * if expand('%') != '' | update | endif
 
+" Removes trailing spaces
+function! TrimWhiteSpace()
+    %s/\s\+$//e
+endfunction
+
+nnoremap <silent> <Leader>rts :call TrimWhiteSpace()<CR>
+
+" Removes trailing spaces on write
+autocmd FileWritePre    * :call TrimWhiteSpace()
+autocmd FileAppendPre   * :call TrimWhiteSpace()
+autocmd FilterWritePre  * :call TrimWhiteSpace()
+autocmd BufWritePre     * :call TrimWhiteSpace()
+
 " disable folding
-set nofoldenable    
+set nofoldenable
+
+" Exit insert with esc
+inoremap jk <Esc>
+
+nnoremap ! :!
+nnoremap ; :
+nnoremap : ;
 
 " Save .swp and backups to a more sane place
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
 
-
-
-
 " Because I close vim sometimes
 set undofile
-set undolevels=1000 
+set undolevels=1000
 set undoreload=10000
 
 
@@ -192,6 +225,7 @@ let g:tmuxline_preset = {
 
 "--------[Airline]--------
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 1
 
 "--------[RainbowParen]--------
@@ -217,3 +251,20 @@ let g:promptline_preset = {
         \'c'    : [ promptline#slices#vcs_branch() ],
         \'warn' : [ promptline#slices#last_exit_code() ],
         \'z'    : [ promptline#slices#host() ]}
+
+"--------[Syntastic]--------
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_quiet_messages = { "type": "style" }
+
+
+"--------[Nerdtree]--------
+autocmd vimenter * NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
