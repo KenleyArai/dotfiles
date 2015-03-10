@@ -204,7 +204,6 @@ map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
-nmap s <Plug>(easymotion-s)
 
 map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)
@@ -243,6 +242,7 @@ autocmd Filetype tex setl updatetime=5000
 let g:livepreview_previewer = 'open -a Skim'
 
 "--------[Align]--------
+" Press enter and select what to align
 vnoremap <silent> <Enter> :EasyAlign<cr>
 
 "--------[Promptline]--------
@@ -263,15 +263,24 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Python support 
 let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_quiet_messages = { "type": "style" }
+
+" C++ support
 let g:syntastic_cpp_compiler = 'clang++'
+" C++11 support 
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
 
 "--------[Nerdtree]--------
 autocmd vimenter * NERDTree
+
+"Always open nerdtree on start 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"Put cursor in main window instead of nerdtree window 
 autocmd VimEnter * NERDTree | wincmd p
 
 "--------[tmuxline]--------
@@ -279,4 +288,6 @@ let g:tmux_navigator_save_on_switch = 1
 
 "--------[tmux-slime]--------
 let g:slime_target = "tmux"
+
+"Trying to get a python repl working
 let g:slime_python_ipython = 1
