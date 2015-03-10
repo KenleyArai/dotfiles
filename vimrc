@@ -33,9 +33,11 @@ Plug 'airblade/vim-gitgutter'
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
+Plug 'jpalardy/vim-slime'
 
 " Latex
 Plug 'xuhdev/vim-latex-live-preview'
+
 
 call plug#end()
 
@@ -61,7 +63,7 @@ set encoding=utf-8
 scriptencoding utf-8
 
 syntax on
-set background=light
+set background=dark
 colorscheme solarized
 
 set clipboard=unnamed
@@ -274,3 +276,7 @@ autocmd VimEnter * NERDTree | wincmd p
 
 "--------[tmuxline]--------
 let g:tmux_navigator_save_on_switch = 1
+
+"--------[tmux-slime]--------
+let g:slime_target = "tmux"
+let g:slime_python_ipython = 1

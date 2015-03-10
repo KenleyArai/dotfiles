@@ -23,9 +23,11 @@ if [[ $UNAME == 'Darwin' ]]; then
 fi
 
 antigen use oh-my-zsh
-source ~/.shell_prompt.sh
 
 antigen apply
+
+source ~/.antigen/minimal/minimal.zsh-theme
+
 
 export EDITOR=/usr/local/bin/vim
 alias tmux="TERM=screen-256color-bce tmux"
