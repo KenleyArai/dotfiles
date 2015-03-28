@@ -27,7 +27,7 @@ antigen apply
 
 source ~/.antigen/minimal/minimal-path-git.zsh-theme
 
-export EDITOR=/usr/local/bin/vim
+export EDITOR=/usr/local/bin/nvim
 alias tmux="TERM=screen-256color-bce tmux"
 
 export DISABLE_AUTO_TITLE="true"

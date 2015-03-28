@@ -29,7 +29,7 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'airblade/vim-gitgutter'
 
 " Python
-Plug 'ivanov/vim-ipython'
+Plug 'ivanov/vim-ipython' 
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
