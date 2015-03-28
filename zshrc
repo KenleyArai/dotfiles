@@ -2,9 +2,8 @@ export ZSH_TMUX_AUTOSTART=true
 # Load Antigen
 source ~/.antigen.zsh
 
-#
+
 # Antigen Bundles
-#
 antigen bundle git
 antigen bundle zsh-users/zsh-syntax-highlighting
 
@@ -26,8 +25,7 @@ antigen use oh-my-zsh
 
 antigen apply
 
-source ~/.antigen/minimal/minimal.zsh-theme
-
+source ~/.antigen/minimal/minimal-path-git.zsh-theme
 
 export EDITOR=/usr/local/bin/vim
 alias tmux="TERM=screen-256color-bce tmux"
@@ -35,3 +33,4 @@ alias tmux="TERM=screen-256color-bce tmux"
 export DISABLE_AUTO_TITLE="true"
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

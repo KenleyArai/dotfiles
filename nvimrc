@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.nvim/plugged')
 
 Plug 'tpope/vim-sensible'
 
@@ -7,14 +7,14 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/rainbow_parentheses.vim'
 
 " Edit
-Plug 'Shougo/neocomplete.vim'
-Plug 'Shougo/neosnippet.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'scrooloose/syntastic'
 Plug 'tomtom/tcomment_vim'
 Plug 'rizzatti/dash.vim'
 Plug 'junegunn/vim-easy-align'
-
+Plug 'benekastah/neomake'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " Visual
 Plug 'bling/vim-airline'
@@ -23,22 +23,13 @@ Plug 'edkolev/promptline.vim'
 
 " Movement
 Plug 'Lokaltog/vim-easymotion'
-Plug 'bkad/CamelCaseMotion'
 
 " Git
 Plug 'airblade/vim-gitgutter'
 
-" Python
-Plug 'ivanov/vim-ipython'
-
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
-Plug 'jpalardy/vim-slime'
-
-" Latex
-Plug 'xuhdev/vim-latex-live-preview'
-
 
 call plug#end()
 
@@ -83,7 +74,7 @@ let g:mapleader=","
 
 "Changing movement to be like emacs
 nmap <C-e> $
-nmap <C-a> ^
+M_TUI_ENABLE_TRUE_COLOR=1 nvimnmap <C-a> ^
 vmap <C-e> $
 vmap <C-a> ^
 imap <C-e> <ESC>$a
@@ -255,30 +246,11 @@ let g:promptline_preset = {
         \'warn' : [ promptline#slices#last_exit_code() ],
         \'z'    : [ promptline#slices#host() ]}
 
-"--------[Syntastic]--------
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Python support
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_quiet_messages = { "type": "style" }
-
-" C++ support
-let g:syntastic_cpp_compiler = 'clang++'
-" C++11 support
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+"--------[neomake]--------
+autocmd! BufWritePost * Neomake
 
 "--------[tmuxline]--------
 let g:tmux_navigator_save_on_switch = 1
 
-"--------[tmux-slime]--------
-let g:slime_target = "tmux"
-
-"Trying to get a python repl working
-let g:slime_python_ipython = 1
+"--------[YouCompleteme]--------
+autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
