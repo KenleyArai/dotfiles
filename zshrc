@@ -12,6 +12,7 @@ antigen bundle pip
 antigen bundle python
 antigen bundle virtualenv
 antigen bundle tmux
+antigen bundle vi-mode
 
 UNAME=`uname`
 if [[ $UNAME == 'Darwin' ]]; then
@@ -22,10 +23,8 @@ if [[ $UNAME == 'Darwin' ]]; then
 fi
 
 antigen use oh-my-zsh
-
+antigen theme S1cK94/minimal builds/minimal-vimode-path-git
 antigen apply
-
-source ~/.antigen/minimal/minimal-path-git.zsh-theme
 
 export EDITOR=/usr/local/bin/nvim
 alias tmux="TERM=screen-256color-bce tmux"
@@ -34,3 +33,5 @@ export DISABLE_AUTO_TITLE="true"
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+bindkey -v
+export KEYTIMEOUT=1

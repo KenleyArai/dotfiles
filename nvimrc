@@ -9,6 +9,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 " Edit
 Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
+Plug 'majutsushi/tagbar'
 
 " Easing my retardation
 Plug 'junegunn/vim-easy-align'
@@ -35,6 +36,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 Plug 'epeli/slimux'
 
+" Markdown
+Plug 'suan/vim-instant-markdown'
 
 call plug#end()
 
@@ -205,7 +208,15 @@ let g:tmux_navigator_save_on_switch = 1
 
 "--------[YouCompleteme]--------
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_key_list_select_completion = ['<TAB>']
+let g:ycm_key_list_previous_completion = ['<S-TAB>']
 
 "--------[Slimux]--------
 map <C-c><C-c> :SlimuxREPLSendLine<CR>
 vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
+
+"--------[Tagbar]---------
+autocmd VimEnter * nested :call tagbar#autoopen(1)
+
