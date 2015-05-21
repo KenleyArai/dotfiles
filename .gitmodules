@@ -4,3 +4,6 @@
 [submodule "minimal"]
 	path = minimal
 	url = https://github.com/S1cK94/minimal
+[submodule "base16-shell"]
+	path = base16-shell
+	url = https://github.com/JohnMorales/base16-shell
