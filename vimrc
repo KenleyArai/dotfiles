@@ -1,11 +1,8 @@
 call plug#begin('~/.vim/plugged')
-
 Plug 'tpope/vim-sensible'
 
 " Colors
-Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'jaxbot/semantic-highlight.vim'
 Plug 'chriskempson/base16-vim'
 
 " Edit
@@ -13,41 +10,18 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'Shougo/vimproc.vim', { 'do:' : 'make' }
 Plug 'scrooloose/syntastic'
-
-" Easing my retardation
-Plug 'junegunn/vim-easy-align'
-Plug 'Shougo/unite.vim'
-
-" Completion
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer' }
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'ervandew/supertab'
 
 " Visual
 Plug 'bling/vim-airline'
 Plug 'Yggdroot/indentLine'
-Plug 'junegunn/vim-pseudocl'
-Plug 'junegunn/vim-fnr'
-
-
 
 " Movement
 Plug 'Lokaltog/vim-easymotion'
 
-" Git
-Plug 'airblade/vim-gitgutter'
-
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
-Plug 'epeli/slimux'
-
-" Markdown
-Plug 'suan/vim-instant-markdown'
-
-" Latex
-Plug 'xuhdev/vim-latex-live-preview'
-
 
 call plug#end()
 
@@ -55,12 +29,13 @@ call plug#end()
 
 "--------[Sensible]--------
 runtime! plugin/sensible.vim
+
 set mouse=""
 set noshowmode
 set expandtab smarttab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set shiftround
 
 " Plugin on indent on filetype detection on
@@ -80,42 +55,12 @@ set formatoptions-=cro
 "Return cursor to previous position on load
 autocmd BufReadPost * normal `""`
 
-augroup CursorLine
-  autocmd!
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  autocmd WinLeave * setlocal nocursorline
-augroup END
-
+set lazyredraw
 let g:mapleader=","
 
 if exists('$TMUX')
   set term=screen-256color
 endif
-
-" for tmux to automatically set paste and nopaste mode at the time pasting (as
-" happens in VIM UI)
-
-function! WrapForTmux(s)
-  if !exists('$TMUX')
-    return a:s
-  endif
-
-  let tmux_start = "\<Esc>Ptmux;"
-  let tmux_end = "\<Esc>\\"
-
-  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
-endfunction
-
-let &t_SI .= WrapForTmux("\<Esc>[?2004h")
-let &t_EI .= WrapForTmux("\<Esc>[?2004l")
-
-function! XTermPasteBegin()
-  set pastetoggle=<Esc>[201~
-  set paste
-  return ""
-endfunction
-
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
 if exists('$ITERM_PROFILE')
   if exists('$TMUX')
@@ -130,7 +75,6 @@ end
 set nu
 set autoindent
 set smartindent
-set lazyredraw
 set backspace=indent,eol,start
 
 "Changing movement to be like emacs
@@ -142,10 +86,10 @@ imap <C-e> <ESC>$a
 imap <C-a> <ESC>^i
 
 " Jump multiple lines
-nnoremap J 5j
-nnoremap K 5k
-xnoremap J 5j
-xnoremap K 5k
+nnoremap J 10j
+nnoremap K 10k
+xnoremap J 10j
+xnoremap K 10k
 
 " move vertically by visual line
 nnoremap j gj
@@ -157,36 +101,8 @@ set showbreak=⇇
 nmap O O<Esc>
 nmap o o<Esc>k
 
-" Sign Column made by solarized color is strange, clear it.
-highlight clear SignColumn
-" vim-gitgutter will use Sign Column to set its color, reload it.
-call gitgutter#highlight#define_highlights()"
-
-" Autosave when leaving insertmode
-autocmd InsertLeave * if expand('%') != '' | update | endif
-
-" Removes trailing spaces
-function! TrimWhiteSpace()
-    %s/\s\+$//e
-endfunction
-
-" Save on lost focus
-au FocusLost * silent! wa
-
-nnoremap <silent> <Leader>rts :call TrimWhiteSpace()<CR>
-
-" Removes trailing spaces on write
-autocmd FileWritePre    * :call TrimWhiteSpace()
-autocmd FileAppendPre   * :call TrimWhiteSpace()
-autocmd FilterWritePre  * :call TrimWhiteSpace()
-autocmd BufWritePre     * :call TrimWhiteSpace()
-
 " Exit insert with esc
 inoremap jj <Esc>
-
-nnoremap ! :!
-nnoremap ; :
-nnoremap : ;
 
 " Save .swp and backups to a more sane place
 set backupdir=~/.vim/backup//
@@ -197,7 +113,6 @@ set undodir=~/.vim/undo//
 set undofile
 set undolevels=1000
 set undoreload=10000
-
 
 "---------------------------------------[Plugin Settings]----------------------------------------
 
@@ -237,6 +152,7 @@ let g:tmuxline_preset = {
 "--------[Airline]--------
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tmuxline#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 
 "--------[RainbowParen]--------
 au VimEnter * RainbowParentheses
@@ -245,10 +161,6 @@ let g:rainbow#max_level = 16
 
 "--------[tmux-navigator]--------
 let g:tmux_navigator_save_on_switch = 1
-
-"--------[Align]--------
-" Press enter and select what to align
-vnoremap <silent> <Enter> :EasyAlign<cr>
 
 "--------[tmuxline]--------
 let g:airline#extensions#tmuxline#enabled = 1
@@ -261,14 +173,6 @@ let g:tmuxline_preset = {
       \'x'    : '%a',
       \'y'    : '#W %R',
       \'z'    : '#H'}
-"--------[YouCompleteme]--------
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-let g:ycm_key_list_select_completion=[]
-let g:ycm_key_list_previous_completion=[]
-
-"--------[Slimux]--------
-map <C-c><C-c> :SlimuxREPLSendLine<CR>
-vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
 
 "--------[Syntastic]--------
 set statusline+=%#warningmsg#
@@ -291,7 +195,3 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
 let g:syntastic_c_check_header = 1
 let g:syntastic_c_remove_include_errors = 1
-
-"--------[Latex Live Preview]--------
-autocmd Filetype tex setl updatetime=5000
-let g:livepreview_previewer = 'open -a Skim'
