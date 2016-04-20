@@ -7,17 +7,11 @@ BINARIES=(
   findutils
   bash
   bash-completion
-  python
-  sshfs
   git
+  hh
   trash
   ack
-  rename
-  libusb
-  autogen
-  automake
   wget
-  pkg-config
   reattach-to-user-namespace
 )
 
@@ -27,13 +21,10 @@ APPS=(
   dropbox
   google-chrome
   iterm2
-  appcleaner
   1password
-  amethyst
   bartender
   caffeine
   dash
-  arduino
 )
 
 # Check for homebrew
@@ -57,6 +48,8 @@ brew install vim --with-lua --override-system-vim
 if test ! $(which brew-cask); then
   echo "Installing brew cask"
   brew install caskroom/cask/brew-cask
+  echo "Taping versions"
+  brew tap caskroom/versions
 fi
 
 echo "Installing apps"

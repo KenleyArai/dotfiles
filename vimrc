@@ -10,7 +10,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tomtom/tcomment_vim'
 Plug 'Shougo/vimproc.vim', { 'do:' : 'make' }
 Plug 'scrooloose/syntastic'
-Plug 'ervandew/supertab'
 
 " Visual
 Plug 'bling/vim-airline'
@@ -23,6 +22,9 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 
+Plug 'tmhedberg/SimpylFold'
+Plug 'vim-scripts/indentpython.vim'
+
 call plug#end()
 
 "----------------------------------------[Basic settings]----------------------------------------
@@ -30,16 +32,24 @@ call plug#end()
 "--------[Sensible]--------
 runtime! plugin/sensible.vim
 
+
+let python_highlight_all=1
+
 set mouse=""
 set noshowmode
 set expandtab smarttab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set shiftround
-
+nnoremap <space> za
 " Plugin on indent on filetype detection on
 filetype plugin indent on
+
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
 
 set encoding=utf-8
 scriptencoding utf-8

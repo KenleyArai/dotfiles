@@ -1,8 +1,7 @@
 export ZSH_TMUX_AUTOSTART=true
-# Load functions
-source ~/.zsh_functions
 # Load Antigen
-source ~/.antigen.zsh
+source ~/.functions.zsh
+source ~/.antigen/antigen.zsh
 
 # Antigen Bundles
 antigen bundle git
@@ -11,8 +10,13 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 # Python Plugins
 antigen bundle pip
 antigen bundle python
-antigen bundle virtualenv
+
+antigen bundle unixorn/autoupdate-antigen.zshplugin
 antigen bundle tmux
+antigen bundle npm
+antigen bundle bower
+antigen bundle tarruda/zsh-autosuggestions.git
+antigen bundle joel-porquet/zsh-dircolors-solarized.git
 
 UNAME=`uname`
 if [[ $UNAME == 'Darwin' ]]; then
@@ -23,8 +27,11 @@ if [[ $UNAME == 'Darwin' ]]; then
 fi
 
 antigen use oh-my-zsh
-antigen theme S1cK94/minimal builds/minimal-path
+antigen theme S1cK94/minimal minimal
+
 antigen apply
+
+export ZSH_THEME="minimal"
 
 # Fix for zsh auto complete
 export LANG="en_US.UTF-8"
@@ -37,38 +44,26 @@ export DISABLE_AUTO_TITLE="true"
 export EDITOR=/usr/local/bin/vim
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-# Docker settings
-export DOCKER_TLS_VERIFY=1
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/kenleyarai/.boot2docker/certs/boot2docker-vm
-
-
 # fzf settings
- [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_COMPLETION_OPTS='-x --tac'
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-source /Users/kenleyarai/.iterm2_shell_integration.zsh
-fpath=(/usr/local/share/zsh-completions $fpath)
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
-  else
-    zle push-input
-    zle clear-screen
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-
 # Base16 Shell
-if [ -n "$PS1" ]; then # if statement guards adding these helpers for non-interative shells
-  eval "$(~/repos/dotfiles/base16-shell/profile_helper.sh)"
-fi
+BASE16_SHELL="$HOME/Documents/dotfiles/base16-shell/base16-solarized.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-source /usr/local/opt/autoenv/activate.sh
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+export PATH=/usr/local/CrossPack-AVR/bin:$PATH
+
+# add this configuration to ~/.zshrc
+export HISTFILE=~/.zsh_history  # ensure history file visibility
+export HH_CONFIG=hicolor        # get more colors
+bindkey -s "\C-r" "\eqhh\n"     # bind hh to Ctrl-r (for Vi mode check doc)
+alias rm=trash
+alias t='todo.sh -d ~/.todo/config'
+eval $(thefuck --alias)
+alias wifi='osx-wifi-cli'
